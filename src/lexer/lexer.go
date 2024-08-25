@@ -83,7 +83,7 @@ func createLexer(source string) *lexer {
 			{regexp.MustCompile(`\/\/.*`), commentHandler},
 			{regexp.MustCompile(`"[^"]*"`), stringHandler},
 			{regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), numberHandler},
-			// {regexp.MustCompile(`[a-zA-Z_][a-zA-Z0-9_]*`), symbolHandler},
+			{regexp.MustCompile(`[a-zA-Z_][a-zA-Z0-9_]*`), symbolHandler},
 			{regexp.MustCompile(`\[`), defaultHandler(OPEN_BRACKET, "[")},
 			{regexp.MustCompile(`\]`), defaultHandler(CLOSE_BRACKET, "]")},
 			{regexp.MustCompile(`\{`), defaultHandler(OPEN_CURLY, "{")},
@@ -147,4 +147,15 @@ func commentHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.remainder())
 	lex.advanceN(match[1])
 	 
+}
+func symbolHandler(lex *lexer, regex *regexp.Regexp) {
+	value := regex.FindString(lex.remainder())
+
+	if kind, exists := isReservedKeyword[value]; exists {
+		lex.push(NewToken(kind,value))
+	}else{
+		lex.push(NewToken(IDENTIFIER, value))
+	}
+	lex.advanceN(len(value))
+ 
 }
