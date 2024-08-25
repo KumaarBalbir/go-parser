@@ -81,6 +81,26 @@ const (
 
 )
 
+var isReservedKeyword = map[string]TokenKind{
+	"let":LET,
+	"const":CONST,
+	"fn":FN,
+	"if":IF,
+	"else":ELSE,
+	"for":FOR,
+	"while":WHILE,
+	"new":NEW,
+	"import":IMPORT,
+	"from":FROM,
+	"class":CLASS,
+	"true":TRUE,
+	"false":FALSE,
+	"foreach":FOREACH,
+	"export":EXPORT,
+	"typeof":TYPEOF,
+	"in":IN,
+}
+
 type Token struct {
 	Kind TokenKind
 	Value string
