@@ -80,7 +80,7 @@ func createLexer(source string) *lexer {
 		patterns: []regexPattern{
 			// define all of the regex patterns
 			{regexp.MustCompile(`\s+`), skipHandler},
-			// {regexp.MustCompile(`\/\/.*`), commentHandler},
+			{regexp.MustCompile(`\/\/.*`), commentHandler},
 			{regexp.MustCompile(`"[^"]*"`), stringHandler},
 			{regexp.MustCompile(`[0-9]+(\.[0-9]+)?`), numberHandler},
 			// {regexp.MustCompile(`[a-zA-Z_][a-zA-Z0-9_]*`), symbolHandler},
@@ -143,9 +143,8 @@ func stringHandler(lex *lexer, regex *regexp.Regexp) {
 	lex.advanceN(len(stringLiteral))	 
 	}
 
-// func commentHandler(lex *lexer, regex *regexp.Regexp) {
-// 	match := regex.FindString(lex.remainder())
-// 	lex.push(NewToken(NUMBER, match))
-// 	lex.advanceN(len(match))
+func commentHandler(lex *lexer, regex *regexp.Regexp) {
+	match := regex.FindStringIndex(lex.remainder())
+	lex.advanceN(match[1])
 	 
-// }
+}
