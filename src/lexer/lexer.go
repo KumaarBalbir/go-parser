@@ -138,7 +138,7 @@ lex.advanceN(match[1])
 
 func stringHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.remainder()) 
-	stringLiteral := lex.remainder()[match[0]:match[1]]
+	stringLiteral := lex.remainder()[match[0]+1:match[1]-1]
 	lex.push(NewToken(STRING, stringLiteral))
 	lex.advanceN(len(stringLiteral))	 
 	}
