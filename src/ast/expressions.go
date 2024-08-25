@@ -22,7 +22,7 @@ func (n SymbolExpr) expr() {}
 // 14 + 3 * 4
 type BinaryExpr struct{
 	Left Expr 
-	operator lexer.Token 
+	Operator lexer.Token 
 	Right Expr 
 }
 func (n BinaryExpr) expr() {}
