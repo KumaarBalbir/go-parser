@@ -6,8 +6,11 @@ type BlockStmt struct {
 	Body []Stmt
 }
 
-func (n BlockStmt) stmt() {}
+func (b BlockStmt) stmt() {}
 
 type ExpressionStmt struct {
 	Expression Expr
 } 
+
+// Implement the stmt method for ExpressionStmt
+func (e ExpressionStmt) stmt() {}
