@@ -14,3 +14,12 @@ type ExpressionStmt struct {
 
 // Implement the stmt method for ExpressionStmt
 func (e ExpressionStmt) stmt() {}
+
+type VarDeclStmt struct {
+	VariableName string 
+	IsConstant bool 
+	AssignedValue Expr 
+	// ExplicitType Type
+}
+
+func (v VarDeclStmt) stmt() {}
