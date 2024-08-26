@@ -1,6 +1,7 @@
-let foo = 35.2;
 let bar = foo * 25 + (35/7 - -4);
-foo = bar + 15;
+const foo: []number = 10;
+
+let foo: number; // no default value
 // foo += 10;
 const isGreater = foo > 15;
 
