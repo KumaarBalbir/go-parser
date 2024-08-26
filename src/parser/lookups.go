@@ -22,6 +22,7 @@ const (
 )
 
 type stmt_handler func(p *parser) ast.Stmt
+
 type nud_handler func(p *parser) ast.Expr
 type led_handler func(p *parser, left ast.Expr, bp binding_power) ast.Expr
 
@@ -52,6 +53,22 @@ func stmt(kind lexer.TokenKind, stmt_fn stmt_handler) {
 // array[index] // computed expression // LED
 // const foo = [1, 2, 3]; // Array/Slice literal // NUD
 // let foo; []number; // TYPE_NUD
+
+/*
+This Go function, `createTokenLookups`, sets up token lookups for a parser. It defines the binding power and parsing functions for various token kinds, including:
+
+* Assignment operators (`=`)
+* Logical operators (`&&`, `||`, `..`)
+* Relational operators (`<`, `>`, `==`, `!=`)
+* Additive operators (`+`, `-`)
+* Multiplicative operators (`*`, `/`, `%`)
+* Literals and symbols (`number`, `string`, `identifier`, `(`, `-`)
+* Statements (`const`, `let`)
+
+The `led` function sets up left-denotation (infix) operators, while the `nud` function sets up null-denotation (prefix) operators. The `stmt` function sets up statement handlers.
+
+In essence, this function tells the parser how to handle different tokens and what parsing functions to call when encountering them.
+*/
 func createTokenLookups() {
 	led(lexer.ASSIGNMENT, assignment, parse_assignment_expr)
 	led(lexer.PLUS_EQUALS, assignment, parse_assignment_expr)

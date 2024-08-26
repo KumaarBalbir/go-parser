@@ -78,37 +78,47 @@ const (
 
 	// Misc
 	NUM_TOKENS
-
 )
 
 var isReservedKeyword = map[string]TokenKind{
-	"let":LET,
-	"const":CONST,
-	"fn":FN,
-	"if":IF,
-	"else":ELSE,
-	"for":FOR,
-	"while":WHILE,
-	"new":NEW,
-	"import":IMPORT,
-	"from":FROM,
-	"class":CLASS,
-	"true":TRUE,
-	"false":FALSE,
-	"foreach":FOREACH,
-	"export":EXPORT,
-	"typeof":TYPEOF,
-	"in":IN,
+	"let":     LET,
+	"const":   CONST,
+	"fn":      FN,
+	"if":      IF,
+	"else":    ELSE,
+	"for":     FOR,
+	"while":   WHILE,
+	"new":     NEW,
+	"import":  IMPORT,
+	"from":    FROM,
+	"class":   CLASS,
+	"true":    TRUE,
+	"false":   FALSE,
+	"foreach": FOREACH,
+	"export":  EXPORT,
+	"typeof":  TYPEOF,
+	"in":      IN,
 }
 
+/*
+The `Token` struct in Go represents a token in the lexer. It has two fields:
+
+- `Kind`: stores the kind of the token, which is an enum value from `TokenKind`.
+- `Value`: stores the literal value of the token, which is a string.
+
+The `Token` struct does not have any methods.
+*/
 type Token struct {
-	Kind TokenKind
+	Kind  TokenKind
 	Value string
 }
 
-
+// isOneOfMany Checks if the token kind is one of the expected tokens.
+//
+// expectedTokens - A variable number of TokenKind values to check against.
+// Return type: bool
 func (tk Token) isOneOfMany(expectedTokens ...TokenKind) bool {
-	for _,expected := range expectedTokens {
+	for _, expected := range expectedTokens {
 		if expected == tk.Kind {
 			return true
 		}
@@ -116,19 +126,34 @@ func (tk Token) isOneOfMany(expectedTokens ...TokenKind) bool {
 
 	return false
 }
-func (token Token) Debug() {
-	if token.isOneOfMany(IDENTIFIER, NUMBER, STRING){
-		fmt.Printf("%s (%s)\n", TokenKindString(token.Kind),token.Value)
- }else{
-	fmt.Printf("%s ()\n", TokenKindString(token.Kind))
- }
-	}
 
+// Debug Prints a debug representation of the token.
+//
+// It prints the token kind and its literal value if it's an identifier, number, or string.
+// Otherwise, it only prints the token kind.
+// Return type: No return value.
+func (token Token) Debug() {
+	if token.isOneOfMany(IDENTIFIER, NUMBER, STRING) {
+		fmt.Printf("%s (%s)\n", TokenKindString(token.Kind), token.Value)
+	} else {
+		fmt.Printf("%s ()\n", TokenKindString(token.Kind))
+	}
+}
+
+// NewToken Creates a new token with the specified kind and value.
+//
+// kind - The type of token to be created.
+// value - The value of the token to be created.
+// Return type: Token
 
 func NewToken(kind TokenKind, value string) Token {
 	return Token{
-		kind,value,
-}
+		kind, value,
+	}
+	// TokenKindString Returns a string representation of a TokenKind.
+	//
+	// kind - The TokenKind to be converted to a string.
+	// Return type: string
 }
 func TokenKindString(kind TokenKind) string {
 	switch kind {
@@ -216,7 +241,7 @@ func TokenKindString(kind TokenKind) string {
 		return "const"
 	case CLASS:
 		return "class"
-	case NEW:	
+	case NEW:
 		return "new"
 	case IMPORT:
 		return "import"
@@ -242,4 +267,3 @@ func TokenKindString(kind TokenKind) string {
 		return fmt.Sprintf("unknown(%d)", kind)
 	}
 }
-
