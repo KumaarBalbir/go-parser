@@ -1,4 +1,5 @@
-package main 
+package main
+
 import (
 	"os"
 	// "github.com/go-parser/src/lexer"
@@ -6,11 +7,11 @@ import (
 	"github.com/sanity-io/litter"
 )
 
-func main (){
-	bytes, _ := os.ReadFile("./examples/02.lang");
+func main() {
+	bytes, _ := os.ReadFile("./examples/03.lang")
 
 	// tokens := lexer.Tokenize(string(bytes))
 	ast := parser.Parse(string(bytes))
-  litter.Dump(ast)
+	litter.Dump(ast)
 
 }
