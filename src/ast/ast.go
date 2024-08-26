@@ -1,9 +1,13 @@
-package ast 
+package ast
 
 type Stmt interface { // statement
-	stmt ()
+	stmt()
 }
 
 type Expr interface { // expression
-	expr ()
+	expr()
+}
+
+type Type interface {
+	_type()
 }
