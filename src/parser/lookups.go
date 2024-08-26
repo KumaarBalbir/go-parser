@@ -49,6 +49,9 @@ func stmt(kind lexer.TokenKind, stmt_fn stmt_handler) {
 	stmt_lu[kind] = stmt_fn
 }
 
+// array[index] // computed expression // LED
+// const foo = [1, 2, 3]; // Array/Slice literal // NUD
+// let foo; []number; // TYPE_NUD
 func createTokenLookups() {
 	led(lexer.ASSIGNMENT, assignment, parse_assignment_expr)
 	led(lexer.PLUS_EQUALS, assignment, parse_assignment_expr)
