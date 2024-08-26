@@ -1,5 +1,4 @@
-package ast 
-
+package ast
 
 // { statement 1; statement 2; }
 type BlockStmt struct {
@@ -10,16 +9,16 @@ func (b BlockStmt) stmt() {}
 
 type ExpressionStmt struct {
 	Expression Expr
-} 
+}
 
 // Implement the stmt method for ExpressionStmt
 func (e ExpressionStmt) stmt() {}
 
 type VarDeclStmt struct {
-	VariableName string 
-	IsConstant bool 
-	AssignedValue Expr 
-	// ExplicitType Type
+	VariableName  string
+	IsConstant    bool
+	AssignedValue Expr
+	ExplicitType  Type
 }
 
 func (v VarDeclStmt) stmt() {}
