@@ -26,15 +26,32 @@ func parse_expression_stmt(p *parser) ast.ExpressionStmt {
 }
 
 func parse_var_decl_stmt(p *parser) ast.Stmt {
-	isConstant := p.advance().Kind == lexer.CONST
+	var explicitType ast.Type
+	startToken := p.advance().Kind
+	isConstant := startToken == lexer.CONST
 	varName := p.expectError(lexer.IDENTIFIER, "Inside variable declaration expected to find variable name").Value
-	p.expect(lexer.ASSIGNMENT)
-	assignedValue := parse_expr(p, assignment)
+	// Explicit type could be present
+	if p.currentTokenKind() == lexer.COLON {
+		p.expect(lexer.COLON)
+		explicitType = parse_type(p, default_bp)
+	}
+	var assignmentValue ast.Expr
+	if p.currentTokenKind() != lexer.SEMI_COLON {
+		p.expect(lexer.ASSIGNMENT)
+		assignmentValue = parse_expr(p, assignment)
+	} else if explicitType == nil {
+		panic("Missing either right hand side in var declaration or explicit type.")
+	}
+
 	p.expect(lexer.SEMI_COLON)
+	if isConstant && assignmentValue == nil {
+		panic("Cannot define constant without providing value")
+	}
 
 	return ast.VarDeclStmt{
+		ExplicitType:  explicitType,
 		IsConstant:    isConstant,
 		VariableName:  varName,
-		AssignedValue: assignedValue,
+		AssignedValue: assignmentValue,
 	}
 }
