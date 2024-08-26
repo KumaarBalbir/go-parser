@@ -1,30 +1,31 @@
-package parser 
+package parser
+
 import (
-	"github.com/go-parser/src/lexer"
-	"github.com/go-parser/src/ast"
 	"fmt"
+	"github.com/go-parser/src/ast"
+	"github.com/go-parser/src/lexer"
 )
 
 type parser struct {
-	
-	tokens []lexer.Token 
-	pos int 
+	tokens []lexer.Token
+	pos    int
 }
 
-func createParser(tokens []lexer.Token) *parser{
+func createParser(tokens []lexer.Token) *parser {
 	createTokenLookups()
+	createTokenTypeLookups()
 	return &parser{
-		tokens: tokens, pos:0,
+		tokens: tokens, pos: 0,
 	}
 }
 
-func Parse(source string)ast.BlockStmt {
+func Parse(source string) ast.BlockStmt {
 	tokens := lexer.Tokenize(source)
 	p := createParser(tokens)
-  body := make([]ast.Stmt,0)
+	body := make([]ast.Stmt, 0)
 	// while we have tokens, continue to parse
 	for p.hasTokens() {
-		body = append(body,parse_stmt(p))
+		body = append(body, parse_stmt(p))
 	}
 
 	return ast.BlockStmt{
@@ -50,19 +51,19 @@ func (p *parser) advance() lexer.Token {
 }
 
 func (p *parser) hasTokens() bool {
-	return p.pos <len(p.tokens) && p.currentTokenKind() != lexer.EOF
+	return p.pos < len(p.tokens) && p.currentTokenKind() != lexer.EOF
 }
 
-func (p *parser) expectError (expectedKind lexer.TokenKind, err any) lexer.Token {
+func (p *parser) expectError(expectedKind lexer.TokenKind, err any) lexer.Token {
 	token := p.currentToken()
-	kind := token.Kind 
+	kind := token.Kind
 
 	if kind != expectedKind {
-   if err == nil{
-		err = fmt.Sprintf("Expected %s, but received %s instead\n", lexer.TokenKindString(expectedKind), lexer.TokenKindString(kind))
+		if err == nil {
+			err = fmt.Sprintf("Expected %s, but received %s instead\n", lexer.TokenKindString(expectedKind), lexer.TokenKindString(kind))
 
-	 }
-	 panic(err)
+		}
+		panic(err)
 	}
 
 	return p.advance()
@@ -70,5 +71,5 @@ func (p *parser) expectError (expectedKind lexer.TokenKind, err any) lexer.Token
 }
 
 func (p *parser) expect(expectedKind lexer.TokenKind) lexer.Token {
-  return p.expectError(expectedKind, nil)
+	return p.expectError(expectedKind, nil)
 }
