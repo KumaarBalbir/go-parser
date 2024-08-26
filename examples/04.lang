@@ -1,0 +1,8 @@
+let foo = 35.2;
+let bar = foo * 25 + (35/7 - -4);
+foo = bar + 15;
+// foo += 10;
+const isGreater = foo > 15;
+
+// add support for types 
+// let v: Vector;
