@@ -1,0 +1,7 @@
+let foo = 35.2;
+let bar = foo * 25;
+
+const isGreater = foo > 15;
+
+// add support for types 
+// let numbers: []number;
